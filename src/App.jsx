@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -31,25 +32,31 @@ function App() {
   return (
     <div className="app">
       <h1>API de Películas</h1>
-      <h2>Películas Populares:</h2>
-      <ul className="movie-list">
-        {popularMovies.map((movie) => (
-          <li key={movie.id} className="movie-item" onClick={() => handleMovieClick(movie)}>
-            <h3>{movie.title}</h3>
-            <p>Calificación: {movie.vote_average}</p>
-          </li>
-        ))}
-      </ul>
-      {selectedMovie && (
-        <div className="selected-movie">
-          <h3>{selectedMovie.title}</h3>
-          <p>Descripción: {selectedMovie.overview}</p>
-          <p>Calificación: {selectedMovie.vote_average}</p>
+      <div className="movie-container">
+        <h2>Películas Populares:</h2>
+        <div className="movie-grid">
+          {popularMovies.map((movie) => (
+            <div
+              key={movie.id}
+              className={`movie-card ${selectedMovie === movie ? 'selected' : ''}`}
+              onClick={() => handleMovieClick(movie)}
+            >
+              <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} />
+              <div className="movie-info">
+                <h3>{movie.title}</h3>
+                {selectedMovie === movie && (
+                  <div>
+                    <p className="movie-description">{movie.overview}</p>
+                    <p className="movie-rating">Calificación: {movie.vote_average}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 export default App;
-
